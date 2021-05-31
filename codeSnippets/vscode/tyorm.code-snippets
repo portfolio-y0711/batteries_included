@@ -1,0 +1,91 @@
+{
+	// Place your global snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	"typeormclass": {
+		"scope": "javascript,typescript",
+		"prefix": "tyo-class",
+		"body": [
+			"import { Entity, PrimaryColumn, Column } from 'typeorm'",
+			"@Entity()",
+			"class ABC {",
+			"    @PrimaryColumn()",
+			"    public id?: number",
+			"    @Column()",
+			"    public name?: string",
+			"}"
+		],
+		"description": "class"
+	},
+	"typeormRepository": {
+		"scope": "javascript,typescript",
+		"prefix": "tyo-repo",
+		"body": [
+			"import { Connection } from 'typeorm';",
+			"import { __ } from '../../entities/__'",
+			"import { makeDb } from '../../typeorm/typeorm-connect'",
+			"",	
+			"export interface _ {",
+			"    create_: (__i: __) => Promise<__>,",
+			"    delete_: (__i: string) => Promise<boolean>,",
+			"    update_: (__a: __) => Promise<boolean>,",
+			"    find_ById: (__Id: string) => Promise<__|undefined>,",
+			"    find_s: () => Promise<__[]|undefined>",
+			"}",
+			"",	
+			"export function _Repository({ makeDb }: { makeDb: () => Promise<Connection> }): _ {",
+			"    return Object.freeze({",
+			"        create_,",
+			"        find_ById,",
+			"        find_s,",
+			"        update_,",
+			"        delete_",
+			"    })",
+			"    async function create_(__a: __): Promise<__> {",
+			"        const db = await makeDb()",
+			"        const repo = db.getRepository(__)",
+			"",
+			"        return repo.save(__a)",
+			"    }",
+			"    async function find_ById(__Id: string) {",
+			"        const db = await makeDb()",
+			"        const repo = db.getRepository(__)",
+			"",
+        	"        return repo.createQueryBuilder()",
+            "            .where('id = :id', { id: __Id })",
+            "            .getOne()",
+			"    }",
+			"    async function find_s() {",
+			"        const db = await makeDb()",
+			"        const repo = db.getRepository(__)",
+			"",
+			"        return repo.find()",
+			"    }",
+			"    async function update_(__a: __): Promise<boolean> {",
+			"        const db = await makeDb()",
+			"        const repo = db.getRepository(__)",
+			"",
+        	"        const result = repo.createQueryBuilder()",
+            "                        .update(__)",
+            "                        .set({})",
+            "                        .where('id = :id', { ...__ })",
+            "                        .execute()",
+        	"        return (result) ? true : false",
+			"    }",
+			"    async function delete_(__id: string): Promise<boolean> {",
+			"        const db = await makeDb()",
+			"        const repo = db.getRepository(__)",
+			"",
+			"        return (await repo.delete(__id)) ? true : false",
+			"    }",
+			"}",
+			"",	
+			"export const _repository = _Repository({ makeDb })"
+		],
+		"description": "class"
+	}
+}
